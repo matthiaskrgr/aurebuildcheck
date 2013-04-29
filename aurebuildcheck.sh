@@ -1,7 +1,18 @@
 #!/bin/bash
 
+timestart() {
+	TS=`date +%s.%N`
+}
+
+timeend() {
+	TE=`date +%s.%N`
+	TD=`calc -p $TE - $TS`
+}
+
 echo "Running 'findbrokenpkgs'."
 echo "This may take some time..."
+
+timestart
 
 LOCALPKGS=`pacman -Qqm`
 BROKENPKGS=`findbrokenpkgs -q -nc | sed '3q;d'`
@@ -21,3 +32,8 @@ else
 	echo "Local packages that may need rebuild:"
 	echo "${NEEDSREBUILD}"
 fi
+
+timeend
+TIME=`awk 'match($0,/[0-9]*.[0-9]{5}/) {print substr($0,RSTART,RLENGTH)}' <( echo "${TD}" )`
+
+echo "Done after ${TIME} seconds."
