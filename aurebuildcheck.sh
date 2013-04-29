@@ -15,7 +15,7 @@ echo "This may take some time..."
 timestart
 
 LOCALPKGS=`pacman -Qqm`
-BROKENPKGS=`findbrokenpkgs -q -nc | sed '3q;d'`
+BROKENPKGS=`findbrokenpkgs -q -nc | sed '3q;d'` # maybe we can run findbrokenpkgs on only the sources of pacman -Qqm ?
 NEEDSREBUILD=""
 
 for BROKENPKG in ${BROKENPKGS}; do
