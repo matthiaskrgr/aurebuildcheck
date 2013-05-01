@@ -37,3 +37,5 @@ timeend
 TIME=`awk 'match($0,/[0-9]*.[0-9]{5}/) {print substr($0,RSTART,RLENGTH)}' <( echo "${TD}" )`
 
 echo "Done after ${TIME} seconds."
+
+echo "Some/all breakages may be OK - findbrokenpkgs cannot distinguish between required and optional dependencies. See http://bbs.archlinux.org/viewtopic.php?id=13882 "
