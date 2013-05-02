@@ -9,13 +9,18 @@ timeend() {
 	TD=`calc -p $TE - $TS`
 }
 
-echo "Running 'findbrokenpkgs'."
-echo "This may take some time..."
+echo "Running 'lddd'."
+#echo "This may take some time..."
 
 timestart
 
+lddd
+
+echo "Reading files and stuff..."
+echo ""
 LOCALPKGS=`pacman -Qqm`
-BROKENPKGS=`findbrokenpkgs -q -nc | sed '3q;d'` # maybe we can run findbrokenpkgs on only the sources of pacman -Qqm ?
+DIR=`ls -tl /tmp/ | grep "ldd"  | head -n1 | awk '{print "/tmp/"$9}'`
+BROKENPKGS=`cat "${DIR}"/possible-rebuilds.txt | awk '{print $2}'`
 NEEDSREBUILD=""
 
 for BROKENPKG in ${BROKENPKGS}; do
@@ -38,4 +43,6 @@ TIME=`awk 'match($0,/[0-9]*.[0-9]{5}/) {print substr($0,RSTART,RLENGTH)}' <( ech
 
 echo "Done after ${TIME} seconds."
 
-echo "Some/all breakages may be OK - findbrokenpkgs cannot distinguish between required and optional dependencies. See http://bbs.archlinux.org/viewtopic.php?id=13882 "
+echo "lddd may not be able to distinguish between required and optional dependencies!"
+echo "Removing files... ( ${DIR} )"
+rm -r ${DIR}

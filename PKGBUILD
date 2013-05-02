@@ -12,7 +12,7 @@ pkgdesc="A bash script checking aur (local) packages which need rebuild accordin
 arch=('any')
 url="https://github.com/matthiaskrgr/aurebuildcheck"
 license=('GPL')
-depends=('findbrokenpkgs' 'calc' 'gawk')
+depends=('devtools' 'calc' 'gawk')
 source=('aurebuildcheck::git://github.com/matthiaskrgr/aurebuildcheck.git')
 sha1sums=('SKIP')
 
