@@ -8,7 +8,7 @@ pkgver() {
     git describe --tags | sed -e 's/^aurebuildcheck\-//' -e 's/-/./g'
 }
 pkgrel=1
-pkgdesc="A bash script checking aur (local) packages which need rebuild according to findbrokenpkgs - git version"
+pkgdesc="A bash script checking aur (local) packages which need rebuild according to lddd - git version"
 arch=('any')
 url="https://github.com/matthiaskrgr/aurebuildcheck"
 license=('GPL')
