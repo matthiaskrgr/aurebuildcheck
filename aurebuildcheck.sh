@@ -55,7 +55,8 @@ for package in $localpackages ; do
 done
 echo "everything done."
 
-echo -e "\n\nPackages which may need rebuild: \n ${RED}${brokenpkgs}${NC}\n"
+brokenamount=`echo ${brokenpkgs} | wc -w`
+echo -e "\n\n${brokenamount} package(s) may need rebuild: \n${RED}${brokenpkgs}${NC}\n"
 
 timeend
 TIME=`awk 'match($0,/[0-9]*.[0-9]{5}/) {print substr($0,RSTART,RLENGTH)}' <( echo "${TD}" )`
