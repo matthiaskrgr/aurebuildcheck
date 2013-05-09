@@ -3,7 +3,7 @@
 export LANG=C
 
 RED='\e[1;31m'
-GREEN='\e[3;32m'
+GREEN='\e[1;32m'
 REDUL='\e[4;31m'
 WHITEUL='\e[4;02m'
 NC='\e[0m'
@@ -26,12 +26,10 @@ localpackages=`pacman -Qqm`
 localpackagesamount=`echo ${localpackages} | wc -w`
 echo -e "Checking ${localpackagesamount} local packages...\n"
 
-
 brokenpkgs=""
-localpackages=`pacman -Qqm`
 for package in $localpackages ; do
 	BROKEN="false"
-	echo "checking ${package}..."
+	printf "checking ${package}..."
 	packagefiles=`pacman -Qql $package | grep -v "\/$\|\.a\|\.png\|\.la\|\.ttf\|\.gz\|\.html\|\.css\|\.h\|\.xml\|\.rgb\|\.gif\|\.wav\|\.ogg\|\.mp3\|\.po\|\.txt\|\.jpg\|\.jpeg\|\.bmp\|\.xcf"`
 	IFS=$'\n'
 	for file in $packagefiles; do
@@ -51,8 +49,9 @@ for package in $localpackages ; do
 
 	if [[ ${BROKEN} == "true" ]] ; then
 		brokenpkgs="${brokenpkgs} ${package}"
+	elif [[ ${BROKEN} == "false" ]] ; then
+		printf " ${GREEN}ok${NC}\n"
 	fi
-
 done
 echo "everything done."
 
