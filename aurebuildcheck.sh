@@ -32,7 +32,7 @@ localpackages=`pacman -Qqm`
 for package in $localpackages ; do
 	BROKEN="false"
 	echo "checking ${package}..."
-	packagefiles=`pacman -Qql $package | grep -v "\.a\|\.png\|\.la\|\.ttf\|\.gz\|\.html\|\.css\|\.h\|\.xml\|\.rgb\|\.gif\|\.wav\|\.ogg\|\.mp3\|\.po\|\.txt\|\.jpg\|\.jpeg"`
+	packagefiles=`pacman -Qql $package | grep -v "\/$\|\.a\|\.png\|\.la\|\.ttf\|\.gz\|\.html\|\.css\|\.h\|\.xml\|\.rgb\|\.gif\|\.wav\|\.ogg\|\.mp3\|\.po\|\.txt\|\.jpg\|\.jpeg\|\.bmp\|\.xcf"`
 	IFS=$'\n'
 	for file in $packagefiles; do
 		if (( $(file $file | grep -c 'ELF') != 0 )); then
