@@ -12,7 +12,7 @@ pkgdesc="A bash script checking aur (local) packages for needing rebuild - git v
 arch=('any')
 url="https://github.com/matthiaskrgr/aurebuildcheck"
 license=('GPL')
-depends=('calc' 'gawk' 'grep' 'pacman')
+depends=('calc' 'python-pyelftools' ) # group base:  'gawk' 'grep' 'pacman' 'file' 'util-linux')
 source=('aurebuildcheck::git://github.com/matthiaskrgr/aurebuildcheck.git')
 sha1sums=('SKIP')
 
