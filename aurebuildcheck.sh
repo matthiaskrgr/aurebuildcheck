@@ -30,19 +30,29 @@ echo -e "${localpackagesamount} packages will be checked...\n"
 brokenpkgs=""
 localpackages=`pacman -Qqm`
 for package in $localpackages ; do
+	BROKEN="false"
 	echo "checking ${package}..."
 	packagefiles=`pacman -Qql $package | grep -v "\.a\|\.png\|\.la\|\.ttf\|\.gz\|\.html\|\.css\|\.h\|\.xml\|\.rgb\|\.gif\|\.wav\|\.ogg\|\.mp3\|\.po\|\.txt\|\.jpg\|\.jpeg"`
 	IFS=$'\n'
 	for file in $packagefiles; do
 		if (( $(file $file | grep -c 'ELF') != 0 )); then
 			#  Is an ELF binary.
-			if (( $(ldd $file 2>/dev/null | grep -c 'not found') != 0 )); then
-				#  Missing lib.
-				echo -e "\t ${RED}${file}${NC} ${REDUL}`ldd $file 2>/dev/null | grep 'not found'`${NC}" # >> $TEMPDIR/raw.txt
-				brokenpkgs="${brokenpkgs} ${package}"
-			fi
+			libs=`readelf -d "${file}" | awk '/NEEDED.*\[.*\]/''{print $5}' | awk  '{ gsub(/\[|\]/, "") ; print  }'`
+			for lib in ${libs} ; do
+			# needed libs
+				if [ -z `whereis ${lib} | awk '{print $2}'` ] ; then
+					#  Missing lib.
+					echo -e "\t ${RED}${file}${NC} needs ${REDUL}$lib${NC}" # >> $TEMPDIR/raw.txt
+					BROKEN="true" # to avoid packages being listed in the brokenpkg array several times
+				fi
+			done
 		fi
 	done
+
+	if [[ ${BROKEN} == "true" ]] ; then
+		brokenpkgs="${brokenpkgs} ${package}"
+	fi
+
 done
 echo "everything done."
 
