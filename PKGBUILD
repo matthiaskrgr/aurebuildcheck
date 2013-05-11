@@ -13,7 +13,7 @@ arch=('any')
 url="https://github.com/matthiaskrgr/aurebuildcheck"
 license=('GPL')
 makedepends=('git')
-depends=('calc' 'python-pyelftools' ) # group base:  'gawk' 'grep' 'pacman' 'file' 'util-linux')
+depends=('python-pyelftools' ) # group base:  'gawk' 'grep' 'pacman' 'file' 'util-linux')
 source=('aurebuildcheck::git://github.com/matthiaskrgr/aurebuildcheck.git')
 sha1sums=('SKIP')
 
