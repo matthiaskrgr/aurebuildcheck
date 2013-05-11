@@ -10,12 +10,12 @@ NC='\e[0m'
 brokenpkgs=""
 
 timestart() {
-	TS=`date +%s.%N`
+	TS=`date +%s`
 }
 
 timeend() {
-	TE=`date +%s.%N`
-    TD=`awk "BEGIN{print $TE-$TS}"`
+	TE=`date +%s`
+    let TD="$TE-$TS"
 }
 
 
