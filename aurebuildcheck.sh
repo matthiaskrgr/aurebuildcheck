@@ -25,7 +25,12 @@ timeend() {
 
 timestart # start timer
 
-localpackages=`pacman -Qqm`
+if [[ -z "$@" ]] ; then
+	localpackages=`pacman -Qqm`
+else
+	localpackages="$@"
+fi
+
 localpackagesamount=`echo ${localpackages} | wc -w`
 # ${localpackages} > 0 since aurebuildcheck in aur
 if  [[ ${localpackagesamount} = 1 ]] ; then
