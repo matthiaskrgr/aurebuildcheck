@@ -24,7 +24,12 @@ timeend() {
 timestart
 localpackages=`pacman -Qqm`
 localpackagesamount=`echo ${localpackages} | wc -w`
-echo -e "Checking ${localpackagesamount} local packages...\n"
+# ${localpackages} > 0 since aurebuildcheck in aur
+if  [[ ${localpackagesamount} = 1 ]] ; then
+	echo -e "Checking ${localpackagesamount} local package...\n"
+else
+	echo -e "Checking ${localpackagesamount} local packages...\n"
+fi
 
 brokenpkgs=""
 for package in $localpackages ; do
@@ -56,7 +61,13 @@ done
 echo "everything done."
 
 brokenamount=`echo ${brokenpkgs} | wc -w`
-echo -e "\n\n${brokenamount} package(s) may need rebuild: \n${RED}${brokenpkgs}${NC}\n"
+if [[ ${brokenamount} = 0 ]] ; then
+	echo "Apparently nothing to do."
+elif  [[ ${brokenamount} = 1 ]] ; then
+	echo -e "\n\n${brokenamount} package may need rebuild: \n${RED}${brokenpkgs}${NC}\n"
+else
+	echo -e "\n\n${brokenamount} packages may need rebuild: \n${RED}${brokenpkgs}${NC}\n"
+fi
 
 timeend
 echo "Done after ${TD} seconds."
