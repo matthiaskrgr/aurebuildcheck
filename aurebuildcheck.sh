@@ -45,7 +45,7 @@ for package in $localpackages ; do
 			# needed libs
 				if [ -z `whereis ${lib} | awk '{print $2}'` ] ; then
 					#  Missing lib.
-					echo -e "\t ${RED}${file}${NC} needs ${REDUL}${lib}${NC}"
+					printf "\n\t ${RED}${file}${NC} needs ${REDUL}${lib}${NC}"
 					BROKEN="true" # to avoid packages being listed in the brokenpkg array several times
 				fi
 			done
@@ -53,6 +53,7 @@ for package in $localpackages ; do
 	done
 
 	if [[ ${BROKEN} == "true" ]] ; then
+		printf "\n"
 		brokenpkgs="${brokenpkgs} ${package}"
 	elif [[ ${BROKEN} == "false" ]] ; then
 		printf " ${GREEN}ok${NC}\n"
