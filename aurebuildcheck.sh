@@ -11,14 +11,16 @@ REDUL='\e[4;31m'
 WHITEUL='\e[4;02m'
 NC='\e[0m'
 brokenpkgs=""
+autoignored=""
+
 
 timestart() {
 	TS=`date +%s`
 }
 
 timeend() {
-	TE=`date +%s`
-	let TD="$TE-$TS"
+    TE=`date +%s`
+    let TD="$TE-$TS"
 }
 
 # the core of the script #
@@ -37,17 +39,23 @@ fi
 
 for package in $localpackages ; do
 	BROKEN="false"
-	printf "checking ${package}..."
-	# sort out some files which are not supposed to be ELF files anyway.
+    printf "checking ${package}..."
+    PkgArch=`pacman -Qi $package | grep "Architecture" | awk '{print $3}' -`
+    if [[ ${PkgArch} == 'any' ]]; then  #Skip package whose architecture is any
+        autoignored="${autoignored} ${package}"
+        printf " ${GREEN}skiped${NC}\n"
+        continue
+    fi
 	packagefiles=`pacman -Qql $package | grep -v "\/$\|\.a\|\.png\|\.la\|\.ttf\|\.gz\|\.html\|\.css\|\.h\|\.xml\|\.rgb\|\.gif\|\.wav\|\.ogg\|\.mp3\|\.po\|\.txt\|\.jpg\|\.jpeg\|\.bmp\|\.xcf\|\.mo\|\.rb\|\.py"`
 	IFS=$'\n'
 	for file in $packagefiles; do # check the files
 		if (( $(file $file | grep -c 'ELF') != 0 )); then
 			#  Is an ELF binary.
 			libs=`readelf -d "${file}" | awk '/NEEDED.*\[.*\]/''{print $5}' | awk  '{ gsub(/\[|\]/, "") ; print  }'`
+            filepath=`echo ${file} | sed -e "s|/[^/]*$||" ` #get current file's path
 			for lib in ${libs} ; do
 			# needed libs
-				if [ -z `whereis ${lib} | awk '{print $2}'` ] ; then
+				if [ -z `whereis ${lib} | awk '{print $2}'` ] && [ -z `find ${filepath} -type f -name ${lib}` ] ; then #check local libs and bundled libs
 					#  Missing lib.
 					printf "\n\t ${RED}${file}${NC} needs ${REDUL}${lib}${NC}"
 					BROKEN="true" # to avoid packages being listed in the brokenpkg array several times
@@ -66,13 +74,9 @@ done
 echo "everything done."
 
 brokenamount=`echo ${brokenpkgs} | wc -w`
-if [[ ${brokenamount} = 0 ]] ; then
-	echo "Apparently nothing to do."
-elif  [[ ${brokenamount} = 1 ]] ; then
-	echo -e "\n\n${brokenamount} package may need rebuild: \n${RED}${brokenpkgs}${NC}\n"
-else
-	echo -e "\n\n${brokenamount} packages may need rebuild: \n${RED}${brokenpkgs}${NC}\n"
-fi
+echo -e "\n\n${brokenamount} package(s) may need rebuild: \n${RED}${brokenpkgs}${NC}\n"
+autoignoredamount=`echo ${autoignored} | wc -w`
+echo -e "\n${autoignoredamount} package(s) auto ignored: \n${GREEN}${autoignored}${NC}\n"
 
 timeend
 echo "Done after ${TD} seconds."

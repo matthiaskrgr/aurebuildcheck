@@ -2,7 +2,7 @@
 # address: run    echo "matthias · krueger _strange_curved_character_ famsik · de" | sed -e 's/\ _strange_curved_character_\ /@/' -e 's/\ ·\ /./g'
 
 pkgname=aurebuildcheck-git
-pkgver=2.5.11.gaca11cf 
+pkgver=2.5.6.gce8978a
 pkgver() {
     cd aurebuildcheck
     git describe --tags | sed -e 's/^aurebuildcheck\-//' -e 's/-/./g'
@@ -13,10 +13,9 @@ arch=('any')
 url="https://github.com/matthiaskrgr/aurebuildcheck"
 license=('GPL')
 makedepends=('git')
-depends=('python-pyelftools' ) # group base:  'gawk' 'grep' 'pacman' 'file' 'util-linux')
+depends=('bash' 'pacman')
 source=('aurebuildcheck::git://github.com/matthiaskrgr/aurebuildcheck.git')
 sha1sums=('SKIP')
-
 
 package() {
   cd "$srcdir"/aurebuildcheck
