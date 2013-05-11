@@ -15,7 +15,8 @@ timestart() {
 
 timeend() {
 	TE=`date +%s.%N`
-	TD=`calc -p $TE - $TS`
+#	TD=`calc -p $TE - $TS`
+    TD=`awk "BEGIN{print $TE-$TS}"`
 }
 
 
@@ -59,6 +60,6 @@ brokenamount=`echo ${brokenpkgs} | wc -w`
 echo -e "\n\n${brokenamount} package(s) may need rebuild: \n${RED}${brokenpkgs}${NC}\n"
 
 timeend
-TIME=`awk 'match($0,/[0-9]*.[0-9]{5}/) {print substr($0,RSTART,RLENGTH)}' <( echo "${TD}" )`
-echo "Done after ${TIME} seconds."
+#TIME=`awk 'match($0,/[0-9]*.[0-9]{5}/) {print substr($0,RSTART,RLENGTH)}' <( echo "${TD}" )`
+echo "Done after ${TD} seconds."
 echo "This script may not be able to distinguish between required and optional dependencies!"
