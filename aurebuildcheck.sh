@@ -2,6 +2,9 @@
 
 export LANG=C
 
+
+
+# functions and variables #
 RED='\e[1;31m'
 GREEN='\e[1;32m'
 REDUL='\e[4;31m'
@@ -15,13 +18,13 @@ timestart() {
 
 timeend() {
 	TE=`date +%s`
-    let TD="$TE-$TS"
+	let TD="$TE-$TS"
 }
 
+# the core of the script #
 
+timestart # start timer
 
-
-timestart
 localpackages=`pacman -Qqm`
 localpackagesamount=`echo ${localpackages} | wc -w`
 # ${localpackages} > 0 since aurebuildcheck in aur
@@ -31,13 +34,14 @@ else
 	echo -e "Checking ${localpackagesamount} local packages...\n"
 fi
 
-brokenpkgs=""
+
 for package in $localpackages ; do
 	BROKEN="false"
 	printf "checking ${package}..."
+	# sort out some files which are not supposed to be ELF files anyway.
 	packagefiles=`pacman -Qql $package | grep -v "\/$\|\.a\|\.png\|\.la\|\.ttf\|\.gz\|\.html\|\.css\|\.h\|\.xml\|\.rgb\|\.gif\|\.wav\|\.ogg\|\.mp3\|\.po\|\.txt\|\.jpg\|\.jpeg\|\.bmp\|\.xcf\|\.mo\|\.rb\|\.py"`
 	IFS=$'\n'
-	for file in $packagefiles; do
+	for file in $packagefiles; do # check the files
 		if (( $(file $file | grep -c 'ELF') != 0 )); then
 			#  Is an ELF binary.
 			libs=`readelf -d "${file}" | awk '/NEEDED.*\[.*\]/''{print $5}' | awk  '{ gsub(/\[|\]/, "") ; print  }'`
