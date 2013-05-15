@@ -34,9 +34,9 @@ fi
 localpackagesamount=`echo ${localpackages} | wc -w`
 # ${localpackages} > 0 since aurebuildcheck in aur
 if  [[ ${localpackagesamount} = 1 ]] ; then
-	echo -e "Checking ${localpackagesamount} local package...\n"
+	echo -e "Checking ${localpackagesamount} package...\n"
 else
-	echo -e "Checking ${localpackagesamount} local packages...\n"
+	echo -e "Checking ${localpackagesamount} packages...\n"
 fi
 
 
