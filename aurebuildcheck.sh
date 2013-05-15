@@ -7,7 +7,7 @@ export LANG=C
 # functions and variables #
 RED='\e[1;31m'
 GREEN='\e[1;32m'
-REDUL='\e[4;31m'
+REDITALIC='\e[3;31m'
 WHITEUL='\e[4;02m'
 NC='\e[0m'
 brokenpkgs=""
@@ -55,7 +55,7 @@ for package in $localpackages ; do
 				# needed libs
 					if [ -z `whereis ${lib} | awk '{print $2}'` ] ; then
 						#  Missing lib.
-						printf "\n\t ${RED}${file}${NC} needs ${REDUL}${lib}${NC}"
+						printf "\n\t ${RED}${file}${NC} needs ${REDITALIC}${lib}${NC}"
 						BROKEN="true" # to avoid packages being listed in the brokenpkg array several times
 					fi
 				done
