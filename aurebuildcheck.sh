@@ -55,7 +55,7 @@ for package in $localpackages ; do
 				for lib in ${libs} ; do
 				# needed libs
 					if [ -z `whereis ${lib} | awk '{print $2}'` ] ; then
-						if [ -n `readelf -d /usr/bin/urxvtd | grep -o "RPATH"` ] ; then # check if there is a rpath, if yes, check if it leads to a lib
+						if [ -n `readelf -d ${file} | grep -o "RPATH"` ] ; then # check if there is a rpath, if yes, check if it leads to a lib
 							rpath=`readelf -d "${file}" | awk '/RPATH.*\[.*\]/''{print $5}' | awk  '{ gsub(/\[|\]/, "") ; print  }'`
 							if [ ! -e "${rpath}/${lib}" ] ; then # check if rpath files does not exists, if true, pkg broken
 								#  Missing lib.
