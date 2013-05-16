@@ -81,12 +81,10 @@ done
 echo "everything done."
 
 brokenamount=`echo ${brokenpkgs} | wc -w`
-if [[ ${brokenamount} = 0 ]] ; then
-	echo "Apparently nothing to do."
-elif  [[ ${brokenamount} = 1 ]] ; then
-	echo -e "\n\n${brokenamount} package may need rebuild: \n${RED}${brokenpkgs}${NC}\n"
+if  [[ ${brokenamount} = 1 ]] ; then
+	echo -e "\n\n${brokenamount} package may need rebuild: \n${RED}${brokenpkgs}${NC}"
 else
-	echo -e "\n\n${brokenamount} packages may need rebuild: \n${RED}${brokenpkgs}${NC}\n"
+	echo -e "\n\n${brokenamount} packages may need rebuild: \n${RED}${brokenpkgs}${NC}"
 fi
 
 timeend
