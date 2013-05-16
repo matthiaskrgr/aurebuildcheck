@@ -50,13 +50,19 @@ for package in $localpackages ; do
 		for file in $packagefiles; do # check the files
 			if (( $(file $file | grep -c 'ELF') != 0 )); then
 				#  Is an ELF binary.
+				rpath=`readelf -d "${file}" | awk '/RPATH.*\[.*\]/''{print $5}' | awk  '{ gsub(/\[|\]/, "") ; print  }'`
 				libs=`readelf -d "${file}" | awk '/NEEDED.*\[.*\]/''{print $5}' | awk  '{ gsub(/\[|\]/, "") ; print  }'`
 				for lib in ${libs} ; do
 				# needed libs
 					if [ -z `whereis ${lib} | awk '{print $2}'` ] ; then
-						#  Missing lib.
-						printf "\n\t ${RED}${file}${NC} needs ${REDITALIC}${lib}${NC}"
-						BROKEN="true" # to avoid packages being listed in the brokenpkg array several times
+						if [ -n `readelf -d /usr/bin/urxvtd | grep -o "RPATH"` ] ; then # check if there is a rpath, if yes, check if it leads to a lib
+							rpath=`readelf -d "${file}" | awk '/RPATH.*\[.*\]/''{print $5}' | awk  '{ gsub(/\[|\]/, "") ; print  }'`
+							if [ ! -e "${rpath}/${lib}" ] ; then # check if rpath files does not exists, if true, pkg broken
+								#  Missing lib.
+								printf "\n\t ${RED}${file}${NC} needs ${REDITALIC}${lib}${NC}"
+								BROKEN="true" # to avoid packages being listed in the brokenpkg array several times
+							fi
+						fi
 					fi
 				done
 			fi
