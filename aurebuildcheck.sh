@@ -45,7 +45,7 @@ for package in $localpackages ; do
 		BROKEN="false"
 		printf "checking ${package}..."
 		# sort out some files which are not supposed to be ELF files anyway.
-		packagefiles=`pacman -Qql $package | grep -v "\/$\|\.a\|\.png\|\.la\|\.ttf\|\.gz\|\.html\|\.css\|\.h\|\.xml\|\.rgb\|\.gif\|\.wav\|\.ogg\|\.mp3\|\.po\|\.txt\|\.jpg\|\.jpeg\|\.bmp\|\.xcf\|\.mo\|\.rb\|\.py\|\.lua\|\.config\|\.svg\|\.desktop\|\.conf\|\.pdf"`
+		packagefiles=`pacman -Qql $package | grep -v "\/$\|\.a\|\.png\|\.la\|\.ttf\|\.gz\|\.html\|\.css\|\.h\|\.xml\|\.rgb\|\.gif\|\.wav\|\.ogg\|\.mp3\|\.po\|\.txt\|\.jpg\|\.jpeg\|\.bmp\|\.xcf\|\.mo\|\.rb\|\.py\|\.lua\|\.config\|\.svg\|\.desktop\|\.conf\|\.pdf\|\.cfg"`
 		IFS=$'\n'
 		for file in $packagefiles; do # check the files
 			if (( $(file $file | grep -c 'ELF') != 0 )); then
