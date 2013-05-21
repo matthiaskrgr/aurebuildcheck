@@ -41,7 +41,7 @@ fi
 
 
 for package in $localpackages ; do
-	if [ `pacman -Qq $package 2>1` ] ; then
+	if [ `pacman -Qq $package >&1` ] ; then
 		BROKEN="false"
 		printf "checking ${package}..."
 		# sort out some files which are not supposed to be ELF files anyway.
