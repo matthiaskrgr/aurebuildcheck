@@ -50,7 +50,7 @@ for package in $localpackages ; do
 		for file in $packagefiles; do # check the files
 			if (( $(file $file | grep -c 'ELF') != 0 )); then
 			# is an ELF binary
-				lib=`ldd $file >&1 | grep "\ =>\ not\ found" | awk '{print $1}'`
+				lib=`ldd $file |& grep "\ =>\ not\ found" | awk '{print $1}'`
 				if [ ! -z ${lib} ] ; then
 					printf "\n\t ${RED}${file}${NC} needs ${REDITALIC}${lib}${NC}"
 					BROKEN="true" # to avoid packages being listed in the brokenpkg array several times
