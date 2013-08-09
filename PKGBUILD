@@ -2,7 +2,7 @@
 # address: run    echo "matthias · krueger _strange_curved_character_ famsik · de" | sed -e 's/\ _strange_curved_character_\ /@/' -e 's/\ ·\ /./g'
 
 pkgname=aurebuildcheck-git
-pkgver=2.5.26.g6f52a2e
+pkgver=2.5.27.g8c94be9
 pkgver() {
     cd aurebuildcheck
     git describe --tags | sed -e 's/^aurebuildcheck\-//' -e 's/-/./g'

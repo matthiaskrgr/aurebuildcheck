@@ -51,7 +51,9 @@ for package in $localpackages ; do
 			if (( $(file $file | grep -c 'ELF') != 0 )); then
 			# is an ELF binary
 				lib=`ldd $file |& grep "\ =>\ not\ found" | awk '{print $1}'`
-				if [ ! -z ${lib} ] ; then
+				lib2=${lib:1:2} # just check for the first charactes to avoid   too many arguments  error
+				if [ ! -z ${lib2} ] ; then
+					lib=`echo $lib | tr " " "\t"` # formatting
 					printf "\n\t ${RED}${file}${NC} needs ${REDITALIC}${lib}${NC}"
 					BROKEN="true" # to avoid packages being listed in the brokenpkg array several times
 				fi
