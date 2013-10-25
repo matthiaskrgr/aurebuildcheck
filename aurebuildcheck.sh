@@ -54,7 +54,7 @@ for package in $localpackages ; do
 				lib2=${lib:1:2} # just check for the first charactes to avoid   too many arguments  error
 				if [ ! -z ${lib2} ] ; then
 					lib=`echo $lib | tr " " "\t"` # formatting
-					printf "\n\t ${RED}${file}${NC} needs ${REDITALIC}${lib}${NC}"
+					printf "\n\t ${RED}${file}${NC} needs ${REDITALIC}${lib}${NC}" >&2
 					BROKEN="true" # to avoid packages being listed in the brokenpkg array several times
 				fi
 				lib=""
@@ -75,9 +75,9 @@ echo "everything done."
 
 brokenamount=`echo ${brokenpkgs} | wc -w`
 if  [[ ${brokenamount} = 1 ]] ; then
-	echo -e "\n\n${brokenamount} package may need rebuild: \n${RED}${brokenpkgs}${NC}"
+	echo -e "\n\n${brokenamount} package may need rebuild: \n${RED}${brokenpkgs}${NC}" >&2
 else
-	echo -e "\n\n${brokenamount} packages may need rebuild: \n${RED}${brokenpkgs}${NC}"
+	echo -e "\n\n${brokenamount} packages may need rebuild: \n${RED}${brokenpkgs}${NC}" >&2
 fi
 
 timeend
