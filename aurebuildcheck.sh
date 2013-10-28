@@ -81,5 +81,5 @@ else
 fi
 
 timeend
-echo "Done after ${TD} seconds."
+echo "${TD} seconds passed."
 echo "This script may not be able to distinguish between required and optional dependencies!"
